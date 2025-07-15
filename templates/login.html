@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Log me maybe!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
+  <style>
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f4f8;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+  }
+
+  input, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: #00a66c;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #008c5a;
+  }
+
+  .error {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <h2 style="text-align: center;">🎤 Log Me Maybe</h2>
+    <p style="text-align: center; font-size: 0.95rem; margin-top: -10px; color: #666;">
+        Hey, I just met you... and this is crazy.<br>
+        But here’s my email... so login maybe? 🔐🎶
+    </p>
+    <form method="POST">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Ingresar</button>
+    </form>
+
+    {% if error %}
+      <div class="error">❌ {{ error }}</div>
+    {% endif %}
+  </div>
+</body>
+</html>

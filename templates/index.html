@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Usuarios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f8;
+      padding: 40px;
+      color: #333;
+      display: flex;
+      justify-content: center;
+    }
+    h2 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .formulario, .usuario {
+      background: white;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      max-width: 500px;
+      transition: transform 0.2s;
+    }
+    .usuario:hover {
+      transform: scale(1.01);
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+  background-color: #00a66c;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #008c5a;
+}
+
+.error {
+  background-color: #d9534f;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.exito {
+  background-color: #5cb85c;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+  </style>
+</head>
+<body>
+<div style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 600px;">
+  <div class="formulario">
+    <div style="text-align: center; margin-bottom: 20px;">
+    <div style="font-size: 40px;">🧑‍💻</div>
+    <h2 style="margin: 10px 0 5px;">¡Alta de Usuario!</h2>
+    <p style="font-size: 0.95rem; color: #666;">
+      One more field, one more friend... <br>
+      ¡Creá, guardá y no te olvides del login! 🗃️✨
+    </p>
+    </div>
+
+    <form id="formulario">
+      <input type="text" id="nombre" placeholder="Nombre completo" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="username" placeholder="Nombre de usuario" required>
+     <div style="position: relative;">
+  <input type="password" id="password" placeholder="Contraseña" required>
+  <button type="button" id="togglePassword" style="
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  ">👁</button>
+</div>
+      <button type="submit">Crear usuario</button>
+    </form>
+    <div id="mensajeError"></div>
+    <div id="mensajeExito"></div>
+  </div>
+
+  <h2 style="text-align: center; margin-top: 40px;">📋 Usuarios cargados</h2>
+  <div id="listaUsuarios"></div>
+
+  <script>
+    const form = document.getElementById('formulario');
+    const lista = document.getElementById('listaUsuarios');
+    const mensajeError = document.getElementById('mensajeError');
+    const mensajeExito = document.getElementById('mensajeExito');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('nombre').value,
+        email: document.getElementById('email').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
+
+      mensajeError.innerHTML = "";
+      mensajeExito.innerHTML = "";
+
+      try {
+        const response = await fetch('/api/usuarios', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          mensajeError.innerHTML = `<div class="error">❌ ${result.error}</div>`;
+          return;
+        }
+
+        mensajeExito.innerHTML = `<div class="exito">✅ Usuario creado correctamente</div>`;
+        setTimeout(() => mensajeExito.innerHTML = "", 3000);
+
+        const div = document.createElement('div');
+        div.classList.add('usuario');
+        div.innerHTML = `
+          <strong>${result.name}</strong><br>
+          Email: ${result.email}<br>
+          Usuario: ${result.username}<br>
+          ID generado: ${result.id}
+        `;
+        lista.appendChild(div);
+
+        form.reset();
+
+      } catch (err) {
+        mensajeError.innerHTML = `<div class="error">❌ Error de red o del servidor</div>`;
+      }
+    });
+    // Mostrar/ocultar contraseña
+document.getElementById("togglePassword").addEventListener("click", function () {
+  const passwordInput = document.getElementById("password");
+  const isHidden = passwordInput.type === "password";
+
+  passwordInput.type = isHidden ? "text" : "password";
+  this.textContent = isHidden ? "🙈" : "👁";
+});
+
+  </script>
+</div>
+</body>
+</html>
