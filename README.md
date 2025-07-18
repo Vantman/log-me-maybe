@@ -12,7 +12,8 @@ Este proyecto cumple con los requisitos del challenge solicitado:
 - ✅ Realiza un request `POST` a una API REST  
 - ✅ Valida la respuesta (`status code`, contenido del `body`, headers)  
 - ✅ Contiene aserciones simples  
-- ✅ Muestra los resultados de forma clara y legible en el navegador  
+- ✅ Muestra los resultados de forma clara y legible en el navegador 
+- ✅ Automatizar pruebas
 
 ---
 
@@ -29,31 +30,25 @@ Este proyecto cumple con los requisitos del challenge solicitado:
 
 log-me-maybe/
 ├── app.py # Backend Flask
+├── test_app.py # Pruebas automatizadas con pytest
 ├── usuarios.json # Archivo donde se guardan los usuarios
 ├── .gitignore
 ├── README.md
 └── templates/
-├── index.html # Frontend HTML + JS para crear usuarios
+├── index.html # Formulario para crear usuarios
 └── login.html # Página de login con branding
-
-yaml
-Copy
-Edit
 
 ---
 
 ## 🚀 Cómo ejecutar el proyecto
 
 ### 1. Instalar dependencias:
-
-```bash
 python -m pip install flask
-2. Ejecutar el servidor:
-bash
-Copy
-Edit
+
+### 2. Ejecutar el servidor:
 python app.py
-3. Abrir el navegador:
+
+### 3. Abrir el navegador:
 👉 http://127.0.0.1:5000
 
 ---
@@ -73,6 +68,28 @@ Guarda los usuarios en usuarios.json
 Devuelve respuestas con códigos adecuados (201, 400, 409)
 
 Gestiona sesiones y login con /login y /logout
+
+---
+
+## 🧪 Pruebas Automatizadas
+
+Usé `pytest` para crear casos de prueba que validan el comportamiento de la app.
+
+### Casos testeados:
+
+- ✔️ Creación de usuario válida (`/api/usuarios`)
+- ✔️ Rechazo de campos vacíos
+- ✔️ Email duplicado detectado
+- ✔️ Login exitoso (`/login`)
+- ✔️ Login fallido con credenciales incorrectas
+
+Cada prueba evalúa el status code esperado (`201`, `400`, `409`), la respuesta del servidor y el contenido devuelto.
+
+> Estos tests me ayudaron a validar errores reales durante el desarrollo (como el "monkey bug") y asegurar la lógica del backend.
+
+Se pueden ejecutar fácilmente con:
+
+python -m pytest test_app.py
 
 ---
 
